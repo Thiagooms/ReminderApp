@@ -3,7 +3,7 @@ package br.com.reminder.reminder.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.*;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +25,7 @@ public class Lembrete implements Serializable {
     private Long id;
     private String nome;
     private String descricao;
+    @Column(name = "data_hora")
     private LocalDateTime dataHora;
 }
 

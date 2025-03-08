@@ -1,0 +1,52 @@
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Lembretes</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="vintage-app">
+        <header class="vintage-header">
+            <h1>Crie Seu Lembrete</h1>
+        </header>
+        <section class="form-container">
+            <div class="retro-window">
+                <div class="window-header">
+                    <div class="close-button">X</div>
+                </div>
+
+                <div class="window-content">
+                    <form action="/" method="post" th:object="${lembrete}">
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="form-group">
+                            <label for="name">Nome</label>
+                            <input type="text" id="name" th:field="*{nome}" placeholder="Digite o nome" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Descrição</label>
+                            <textarea id="description" th:field="*{descricao}" rows="2" placeholder="Digite a descrição" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dateHour">Data e Hora</label>
+                            <input type="datetime-local" id="dateHour" th:field="*{dataHora}" required>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="submit" id="btn-save">Criar Lembrete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="reminder-created">
+            <h2>Lembretes Cadastrados</h2>
+            
+        </section>
+    </div>
+</body>
+</html>

@@ -2,17 +2,22 @@ package br.com.reminder.reminder.service;
 
 import java.util.Optional;
 
+import br.com.reminder.reminder.exception.LembreteNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.reminder.reminder.entity.Lembrete;
 import br.com.reminder.reminder.repository.ILembreteRepository;
 
+
 @Service
 public class LembreteService {
     
-    @Autowired
-    private ILembreteRepository repository;
+    private final ILembreteRepository repository;
+
+    public LembreteService(ILembreteRepository repository) {
+        this.repository = repository;
+    }
 
     public Lembrete create(Lembrete obj) {
         return repository.save(obj);
@@ -23,19 +28,17 @@ public class LembreteService {
     }
 
     public Lembrete getId(Long id) {
-        Optional<Lembrete> obj = repository.findById(id);
-        return obj.get();
+        return repository.findById(id)
+                .orElseThrow(() -> new LembreteNotFoundException(id));
     }
 
     public Lembrete update(Lembrete obj) {
-        Optional<Lembrete> newObj = repository.findById(obj.getId());
-    
-        if (newObj.isPresent()) {
-            updateLembrete(newObj.get(), obj);
-            return repository.save(newObj.get());
-        } else {
-            throw new RuntimeException("Lembrete não encontrado com o ID: " + obj.getId());
-        }
+        return repository.findById(obj.getId())
+                .map(existingLembrete -> {
+                    updateLembrete(existingLembrete, obj);
+                    return repository.save(existingLembrete);
+                })
+                .orElseThrow(() -> new LembreteNotFoundException(obj.getId()));
     }
 
     public void updateLembrete(Lembrete newObj, Lembrete obj) {
